@@ -1,0 +1,57 @@
+Briefing 24 marzo — Chatbot Restauro
+Obiettivo: demo funzionante per la tesi
+Deadline: novembre 2026
+Nome e logo: da definire (idea: pennello / tema restauro)
+Ambito di restauro
+Restauro pittorico su tela e legno
+Cornici, solventi, pigmenti, olio su tela
+No affreschi, no stampe
+Knowledge base
+Due blocchi di materiale:
+
+1) Relazioni vecchie (~100, in PDF)
+Sono i casi pratici. Le mettiamo dentro così come sono, senza sistemarle.
+Il bot le usa per rispondere e cita da quale relazione ha preso l’info.
+Basta che i file abbiano un nome riconoscibile, tipo relazione_madonna_2021.pdf
+
+2) Materiale accademico
+Libri di riferimento:
+– Costantini — Il restauro dei dipinti olio su tela
+– Cremonesi — Solventi organici nella pulitura di opere policrome
+– Cremonesi — Tensioattivi e chelanti per il trattamento di opere policrome
+– Cremonesi — Un approccio alla pulitura dei dipinti mobili
+– I pigmenti nell’arte (dalla preistoria alla rivoluzione industriale)
+– De Luca — I manufatti dipinti su supporto tessile
+
+Dove possibile usiamo appunti, sbobine e riassunti personali.
+Argomentazione dati
+Va preparata un’argomentazione solida su quali dati alimentano il database.
+Serve giustificare la scelta delle fonti, la loro affidabilità e i criteri di selezione.
+Questo sia per la tesi che per rispondere a domande della commissione.
+Come funziona l’app
+Pagina Chat: chiedi qualcosa → il bot risponde citando i documenti
+Pagina Archivio: lista delle relazioni vecchie, filtrabili per tipo/materiale/data
+UI: effetto glass con immagini di restauro dietro, colori caldi
+Documenti mancanti
+□  Le relazioni in PDF (tutte, anche disordinate)
+□  Il PDF del De Luca
+□  Appunti / sbobine dei corsi (Cremonesi, Costantini, pigmenti)
+□  Foto di restauri per lo sfondo (se disponibili)
+Formato: cartella Drive o ZIP, non serve ordinare nulla
+Costi
+Hosting: gratis
+API IA: ~5–10€ per tutta la demo
+Dominio custom (opzionale): ~10€/anno
+Esempi di caso d’uso
+
+“Quali solventi sono stati usati per la pulitura della Pala di San Marco?”
+→ Il bot cerca nelle relazioni, trova quella specifica e risponde con il solvente usato, la concentrazione e il metodo di applicazione. Cita la relazione.
+
+“Come si tratta un sollevamento della pellicola pittorica su tela di lino?”
+→ Il bot incrocia gli appunti sui materiali con i casi pratici delle relazioni e dà una procedura basata su entrambe le fonti.
+
+“Ho una tavola con ridipinture a olio su una preparazione a gesso. Come procedo?”
+→ Il bot suggerisce test di solubilità, solventi adatti dal Cremonesi e confronta con relazioni simili già fatte.
+
+“Mostrami tutte le relazioni che hanno usato Paraloid B-72.”
+→ La pagina archivio filtra e mostra la lista delle relazioni dove compare quel materiale.
