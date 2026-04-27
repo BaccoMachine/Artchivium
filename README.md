@@ -2,9 +2,9 @@
 
 Static UI prototype for **Artchivium**, a RAG-based chatbot for consulting art restoration documents.
 
-> This is a design mockup only — no backend, no real API calls. Full implementation with Claude API + RAG in progress.
+> This is a design mockup only — no backend, no real API calls. Full implementation with external LLM API + RAG in progress.
 
-## What it does (prototype)
+## What it does 
 
 - Browse simulated restoration case reports
 - Chat interface with pre-scripted responses
@@ -22,7 +22,7 @@ Just open `Restauro Chat.html` in a browser. No install needed.
 
 ## Roadmap
 
-- [ ] Claude API integration (real responses)
+- [ ] LLM API integration (real responses)
 - [ ] PDF upload + text extraction
 - [ ] RAG with embeddings + vector store
 - [ ] Next.js rewrite with proper backend
