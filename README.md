@@ -16,14 +16,5 @@ Static UI prototype for **Artchivium**, a RAG-based chatbot for consulting art r
 
 Vanilla React (no bundler) · CSS custom properties · Single-file HTML entry point
 
-## Run locally
 
-Just open `Restauro Chat.html` in a browser. No install needed.
 
-## Roadmap
-
-- [ ] LLM API integration (real responses)
-- [ ] PDF upload + text extraction
-- [ ] RAG with embeddings + vector store
-- [ ] Next.js rewrite with proper backend
-- [ ] Deploy on Vercel
