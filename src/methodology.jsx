@@ -7,8 +7,8 @@ const MethodologyPage = () => (
   <div className="main glass">
     <header className="main-header">
       <div>
-        <div className="main-title">Metodologia</div>
-        <div className="main-sub">Criteri di selezione e affidabilità delle fonti</div>
+        <div className="main-title">Info</div>
+        <div className="main-sub">Metodologia · criteri di selezione e affidabilità delle fonti</div>
       </div>
     </header>
     <div className="main-body">

@@ -9,7 +9,25 @@ const TweaksPanel = ({ open, tweaks, setTweaks }) => {
       <h5>Tweaks</h5>
 
       <div className="tweak-row">
-        <label>Atmosfera sfondo</label>
+        <label>Tema</label>
+        <div className="tweak-opts">
+          {["chiaro", "scuro"].map((t) => (
+            <button key={t} className={tweaks.theme === t ? "active" : ""} onClick={() => set("theme", t)}>{t}</button>
+          ))}
+        </div>
+      </div>
+
+      <div className="tweak-row">
+        <label>Dipinto sullo sfondo</label>
+        <div className="tweak-opts">
+          {["none", "madonna", "craquelure", "ir", "uv"].map((p) => (
+            <button key={p} className={tweaks.painting === p ? "active" : ""} onClick={() => set("painting", p)}>{p}</button>
+          ))}
+        </div>
+      </div>
+
+      <div className="tweak-row">
+        <label>Atmosfera sfondo (se nessun dipinto)</label>
         <div className="tweak-opts">
           {["studio", "linen", "ink", "pietra"].map((b) => (
             <button key={b} className={tweaks.bg === b ? "active" : ""} onClick={() => set("bg", b)}>{b}</button>
@@ -59,6 +77,16 @@ const TweaksPanel = ({ open, tweaks, setTweaks }) => {
             <button key={t.id} className={tweaks.tone === t.id ? "active" : ""} onClick={() => set("tone", t.id)}>{t.id}</button>
           ))}
         </div>
+      </div>
+
+      <div className="tweak-row">
+        <label>Sfondo — sfocatura {tweaks.bgBlur}px</label>
+        <input type="range" min="0" max="80" value={tweaks.bgBlur} onChange={(e) => set("bgBlur", +e.target.value)} />
+      </div>
+
+      <div className="tweak-row">
+        <label>Sfondo — opacità {Math.round(tweaks.bgOpacity * 100)}%</label>
+        <input type="range" min="0" max="100" value={tweaks.bgOpacity * 100} onChange={(e) => set("bgOpacity", +e.target.value / 100)} />
       </div>
 
       <div className="tweak-row">

@@ -74,17 +74,34 @@ input, textarea { font: inherit; color: inherit; }
   opacity: 0.55;
   transition: opacity 900ms, background 900ms;
 }
+.bg-painting {
+  position: absolute;
+  top: -10%; left: -10%;
+  width: 120%; height: 120%;
+  background-size: cover; background-position: center;
+  transition: filter 900ms, opacity 900ms, background-image 900ms;
+  will-change: filter;
+}
 .bg-vignette {
   position: absolute; inset: 0;
+  pointer-events: none;
+}
+.bg-vignette.is-dark {
   background:
-    radial-gradient(ellipse at 30% 20%, transparent 0%, oklch(0.13 0.003 240 / 0.55) 60%, oklch(0.11 0.003 240 / 0.9) 100%),
-    linear-gradient(180deg, oklch(0.13 0.003 240 / 0.3) 0%, oklch(0.13 0.003 240 / 0.55) 100%);
+    radial-gradient(ellipse at 30% 20%, transparent 0%, oklch(0.13 0.003 240 / 0.45) 60%, oklch(0.10 0.003 240 / 0.85) 100%),
+    linear-gradient(180deg, oklch(0.13 0.003 240 / 0.20) 0%, oklch(0.10 0.003 240 / 0.50) 100%);
+}
+.bg-vignette.is-light {
+  background:
+    radial-gradient(ellipse at 30% 20%, transparent 0%, oklch(0.96 0.005 80 / 0.30) 60%, oklch(0.93 0.006 80 / 0.55) 100%),
+    linear-gradient(180deg, oklch(0.97 0.005 80 / 0.10) 0%, oklch(0.93 0.006 80 / 0.30) 100%);
 }
 .bg-grain {
   position: absolute; inset: 0;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.95  0 0 0 0 0.97  0 0 0 0 1  0 0 0 0.25 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  opacity: 0.18;
+  opacity: 0.14;
   mix-blend-mode: overlay;
+  pointer-events: none;
 }
 
 .glass {
@@ -1047,4 +1064,154 @@ input, textarea { font: inherit; color: inherit; }
   border: 1.25px solid var(--ink-0);
   border-radius: 50%;
   position: relative;
+}
+
+/* =======================================================================
+   TEMA CHIARO — override quando html[data-theme="chiaro"]
+   I valori in :root sono per il tema scuro. Qui si rimappa tutto ciò che
+   usava bianco-trasparente (oklch(0.98 0.003 240 / N)) in nero-trasparente.
+   ======================================================================= */
+html[data-theme="chiaro"] {
+  --bg-0: oklch(0.96 0.005 80);
+  --bg-1: oklch(0.93 0.006 80);
+  --bg-2: oklch(0.89 0.007 80);
+
+  --ink-0: oklch(0.20 0.012 250);
+  --ink-1: oklch(0.32 0.010 250);
+  --ink-2: oklch(0.48 0.008 250);
+  --ink-3: oklch(0.62 0.006 250);
+  --ink-4: oklch(0.74 0.005 250);
+
+  /* Vetro chiaro: bianco velato su sfondo dipinto */
+  --glass-bg: oklch(0.99 0.003 80 / 0.45);
+  --glass-bg-strong: oklch(1 0 0 / 0.62);
+  --glass-border: oklch(0.20 0.012 250 / 0.10);
+
+  --rel-color: oklch(0.32 0.010 250);
+}
+
+/* Scrollbar — chiaro */
+html[data-theme="chiaro"] ::-webkit-scrollbar-thumb { background: oklch(0.20 0.012 250 / 0.16); }
+html[data-theme="chiaro"] ::-webkit-scrollbar-thumb:hover { background: oklch(0.20 0.012 250 / 0.30); }
+
+/* Glass shadow più morbido */
+html[data-theme="chiaro"] .glass {
+  box-shadow:
+    inset 0 1px 0 oklch(1 0 0 / 0.55),
+    0 14px 40px -22px oklch(0.20 0.012 250 / 0.30);
+}
+
+/* Topbar */
+html[data-theme="chiaro"] .topbar {
+  background: oklch(0.99 0.003 80 / 0.55);
+  border-bottom-color: oklch(0.20 0.012 250 / 0.10);
+}
+html[data-theme="chiaro"] .tb-brand { border-right-color: oklch(0.20 0.012 250 / 0.10); }
+html[data-theme="chiaro"] .tb-nav-item:hover { background: oklch(0.20 0.012 250 / 0.05); }
+html[data-theme="chiaro"] .tb-nav-item.active { background: oklch(0.20 0.012 250 / 0.08); }
+html[data-theme="chiaro"] .tb-kbd,
+html[data-theme="chiaro"] .tb-user {
+  background: oklch(0.20 0.012 250 / 0.04);
+  border-color: oklch(0.20 0.012 250 / 0.10);
+}
+html[data-theme="chiaro"] .tb-user:hover { background: oklch(0.20 0.012 250 / 0.08); }
+html[data-theme="chiaro"] .tb-user-dot { color: oklch(0.99 0.003 80); }
+
+/* Conversazioni */
+html[data-theme="chiaro"] .conv-panel-head { border-bottom-color: oklch(0.20 0.012 250 / 0.08); }
+html[data-theme="chiaro"] .btn-new {
+  background: oklch(0.20 0.012 250 / 0.06);
+  border-color: oklch(0.20 0.012 250 / 0.10);
+}
+html[data-theme="chiaro"] .btn-new:hover { background: oklch(0.20 0.012 250 / 0.12); }
+html[data-theme="chiaro"] .conv-item:hover { background: oklch(0.20 0.012 250 / 0.05); }
+html[data-theme="chiaro"] .conv-item.active { background: oklch(0.20 0.012 250 / 0.10); }
+
+/* Main */
+html[data-theme="chiaro"] .main-header { border-bottom-color: oklch(0.20 0.012 250 / 0.08); }
+
+/* Bolla utente + suggerimenti */
+html[data-theme="chiaro"] .msg-user-bubble {
+  background: oklch(0.20 0.012 250 / 0.06);
+  border-color: oklch(0.20 0.012 250 / 0.10);
+}
+html[data-theme="chiaro"] .suggestion {
+  background: oklch(0.20 0.012 250 / 0.03);
+  border-color: oklch(0.20 0.012 250 / 0.10);
+}
+html[data-theme="chiaro"] .suggestion:hover {
+  background: oklch(0.72 0.08 220 / 0.10);
+  border-color: oklch(0.72 0.08 220 / 0.40);
+}
+
+/* Composer / sticky gradient */
+html[data-theme="chiaro"] .composer-wrap {
+  background: linear-gradient(180deg, transparent 0%, var(--bg-0) 70%, var(--bg-0) 100%);
+}
+html[data-theme="chiaro"] .composer-send {
+  background: var(--ink-0);
+  color: var(--bg-0);
+}
+html[data-theme="chiaro"] .composer-send:disabled {
+  background: oklch(0.20 0.012 250 / 0.10);
+  color: var(--ink-3);
+}
+
+/* Card archivio */
+html[data-theme="chiaro"] .rel-card {
+  background: oklch(0.99 0.003 80 / 0.55);
+  border-color: oklch(0.20 0.012 250 / 0.10);
+}
+html[data-theme="chiaro"] .rel-card-thumb {
+  background: linear-gradient(135deg, oklch(0.86 0.008 80) 0%, oklch(0.78 0.008 80) 100%);
+  border-bottom-color: oklch(0.20 0.012 250 / 0.06);
+}
+html[data-theme="chiaro"] .rel-card-thumb::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8'><path d='M0 4 L8 4' stroke='%23000000' stroke-width='0.5' opacity='0.06'/></svg>");
+}
+html[data-theme="chiaro"] .preview-thumb {
+  background: linear-gradient(135deg, oklch(0.86 0.008 80) 0%, oklch(0.78 0.008 80) 100%);
+  border-color: oklch(0.20 0.012 250 / 0.10);
+}
+html[data-theme="chiaro"] .preview-thumb::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8'><path d='M0 4 L8 4' stroke='%23000000' stroke-width='0.5' opacity='0.06'/></svg>");
+}
+
+/* Search / filtri */
+html[data-theme="chiaro"] .archive-search,
+html[data-theme="chiaro"] .view-toggle {
+  background: oklch(0.20 0.012 250 / 0.04);
+  border-color: oklch(0.20 0.012 250 / 0.10);
+}
+html[data-theme="chiaro"] .view-toggle button.active { background: oklch(0.20 0.012 250 / 0.10); }
+html[data-theme="chiaro"] .filter-chip { border-color: oklch(0.20 0.012 250 / 0.12); }
+html[data-theme="chiaro"] .filter-chip:hover { border-color: oklch(0.20 0.012 250 / 0.22); }
+
+/* Tabella */
+html[data-theme="chiaro"] .archive-table thead th {
+  background: oklch(0.20 0.012 250 / 0.03);
+  border-bottom-color: oklch(0.20 0.012 250 / 0.12);
+}
+html[data-theme="chiaro"] .archive-table tbody td { border-bottom-color: oklch(0.20 0.012 250 / 0.07); }
+html[data-theme="chiaro"] .archive-table tbody tr:hover { background: oklch(0.20 0.012 250 / 0.05); }
+
+/* Doc / pigmenti / tecniche */
+html[data-theme="chiaro"] .pigmento,
+html[data-theme="chiaro"] .tecnica {
+  background: oklch(0.99 0.003 80 / 0.55);
+  border-color: oklch(0.20 0.012 250 / 0.10);
+}
+html[data-theme="chiaro"] .pigmento-swatch { border-color: oklch(0.20 0.012 250 / 0.10); }
+html[data-theme="chiaro"] .sources-table td { border-bottom-color: oklch(0.20 0.012 250 / 0.08); }
+html[data-theme="chiaro"] .tag {
+  background: oklch(0.20 0.012 250 / 0.05);
+  border-color: oklch(0.20 0.012 250 / 0.10);
+}
+
+/* Logo */
+html[data-theme="chiaro"] .logo-circle { border-color: var(--ink-0); }
+
+/* Cit popover */
+html[data-theme="chiaro"] .cit-popover {
+  /* il popover usa .glass-strong, ereditato — niente da fare */
 }

@@ -1,0 +1,118 @@
+/* =======================================================================
+   Stili specifici per la versione PDF / print
+   - ogni .print-page riempie la pagina A4 landscape
+   - disabilita vetri / blur / sticky / animazioni in @media print
+   ======================================================================= */
+
+/* Layout: stack verticale di "pagine" */
+html, body, #root { height: auto !important; overflow: visible !important; }
+body { background: var(--bg-0); }
+
+.print-stack {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.print-page {
+  position: relative;
+  break-inside: avoid;
+  break-after: page;
+}
+.print-page:last-child { break-after: auto; }
+
+.print-page-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 10px;
+}
+
+.print-page-frame {
+  /* Ogni schermata ha un'altezza pensata per riempire una A4 landscape */
+  width: 100%;
+  /* 1400 - padding ~ 1352, A4 landscape ratio ~ 1.414 */
+  aspect-ratio: 1.414 / 1;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid oklch(0.98 0.003 240 / 0.10);
+  background: var(--bg-0);
+}
+
+/* L'app-shell deve riempire il frame */
+.print-shell {
+  height: 100% !important;
+}
+
+/* Composer + input sticky non hanno senso in stampa: nascondi */
+.print-shell .composer-wrap { display: none !important; }
+
+/* Niente sticky nei body */
+.print-shell .main-body {
+  padding-bottom: 24px !important;
+}
+
+/* Niente animazioni di entrata */
+.print-shell *, .print-shell *::before, .print-shell *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* =======================================================================
+   @media print — la stampa vera
+   ======================================================================= */
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 8mm;
+  }
+  html, body {
+    background: var(--bg-0) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .print-stack {
+    padding: 0;
+    gap: 0;
+    max-width: none;
+  }
+  .print-page-tag { display: none; }
+  .print-page-frame {
+    aspect-ratio: auto;
+    height: 100vh;
+    border: none;
+    border-radius: 0;
+    page-break-inside: avoid;
+  }
+  .print-page {
+    page-break-after: always;
+    break-after: page;
+  }
+  .print-page:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+
+  /* In stampa, il backdrop-filter spesso non viene reso correttamente:
+     sostituisco il vetro con riempimenti opachi di fallback */
+  .glass, .glass-strong {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Non far comparire la conv-panel se troppo larga: ok lasciarla */
+  /* Hover etc già rimossi */
+
+  /* Lo sfondo dipinto rallenta molto la stampa: lo lasciamo ma con meno opacità */
+  .bg-painting {
+    opacity: 0.45 !important;
+    filter: blur(28px) saturate(0.6) brightness(0.7) !important;
+  }
+}

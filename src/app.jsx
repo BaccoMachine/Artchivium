@@ -1,4 +1,4 @@
-/* global React, ReactDOM, BackgroundLayer, Topbar, ConvPanel, ChatPage, ArchivePage, MethodologyPage, GuidePage, PreviewPanel, TweaksPanel, RESTAURO_DATA */
+/* global React, ReactDOM, BackgroundLayer, Topbar, ConvPanel, ChatPage, ArchivePage, MethodologyPage, MaterialiPage, TecnichePage, PreviewPanel, TweaksPanel, RESTAURO_DATA */
 const { useState: uSA, useEffect: uEA } = React;
 
 const ACCENTS = {
@@ -23,12 +23,16 @@ const FONTS = {
 };
 
 const DEFAULTS = /*EDITMODE-BEGIN*/{
+  "theme": "scuro",
+  "painting": "madonna",
   "bg": "studio",
   "accent": "acciaio",
   "font": "Helvetica",
   "tone": "notte",
   "blur": 28,
   "glassOp": 0.045,
+  "bgBlur": 18,
+  "bgOpacity": 0.85,
   "density": "standard",
   "convPanel": "visibile"
 }/*EDITMODE-END*/;
@@ -53,14 +57,29 @@ const App = () => {
   }, [page]);
 
   uEA(() => {
-    const r = document.documentElement.style;
-    const tone = TONES[tweaks.tone];
-    r.setProperty("--bg-0", `oklch(${tone.base})`);
-    r.setProperty("--ink-0", `oklch(${tone.ink0})`);
-    r.setProperty("--ink-1", `oklch(${tone.ink1})`);
-    r.setProperty("--ink-2", `oklch(${tone.ink2})`);
-    r.setProperty("--ink-3", `oklch(${tone.ink3})`);
-    r.setProperty("--ink-4", `oklch(${tone.ink4})`);
+    const root = document.documentElement;
+    const r = root.style;
+    const isLight = tweaks.theme === "chiaro";
+    root.setAttribute("data-theme", isLight ? "chiaro" : "scuro");
+
+    // Tone applicato SOLO al tema scuro (il chiaro ha la sua palette via CSS)
+    if (!isLight) {
+      const tone = TONES[tweaks.tone] || TONES.notte;
+      r.setProperty("--bg-0", `oklch(${tone.base})`);
+      r.setProperty("--ink-0", `oklch(${tone.ink0})`);
+      r.setProperty("--ink-1", `oklch(${tone.ink1})`);
+      r.setProperty("--ink-2", `oklch(${tone.ink2})`);
+      r.setProperty("--ink-3", `oklch(${tone.ink3})`);
+      r.setProperty("--ink-4", `oklch(${tone.ink4})`);
+    } else {
+      // Lascio cadere alle regole CSS html[data-theme="chiaro"]
+      r.removeProperty("--bg-0");
+      r.removeProperty("--ink-0");
+      r.removeProperty("--ink-1");
+      r.removeProperty("--ink-2");
+      r.removeProperty("--ink-3");
+      r.removeProperty("--ink-4");
+    }
 
     r.setProperty("--accent", `oklch(${ACCENTS[tweaks.accent]})`);
     const accParts = ACCENTS[tweaks.accent].split(" ");
@@ -73,8 +92,14 @@ const App = () => {
 
     r.setProperty("--glass-blur", tweaks.blur + "px");
     const op = tweaks.glassOp;
-    r.setProperty("--glass-bg", `oklch(0.98 0.003 240 / ${op})`);
-    r.setProperty("--glass-bg-strong", `oklch(0.98 0.003 240 / ${(op * 1.8).toFixed(3)})`);
+    if (isLight) {
+      // Vetro chiaro: bianco velato
+      r.setProperty("--glass-bg", `oklch(1 0 0 / ${(op * 8).toFixed(3)})`);
+      r.setProperty("--glass-bg-strong", `oklch(1 0 0 / ${Math.min(op * 14, 0.85).toFixed(3)})`);
+    } else {
+      r.setProperty("--glass-bg", `oklch(0.98 0.003 240 / ${op})`);
+      r.setProperty("--glass-bg-strong", `oklch(0.98 0.003 240 / ${(op * 1.8).toFixed(3)})`);
+    }
 
     // density
     const dens = tweaks.density;
@@ -112,7 +137,7 @@ const App = () => {
 
   return (
     <>
-      <BackgroundLayer variant={tweaks.bg} />
+      <BackgroundLayer variant={tweaks.bg} painting={tweaks.painting} theme={tweaks.theme} bgBlur={tweaks.bgBlur} bgOpacity={tweaks.bgOpacity} />
       <div className="app-shell" data-screen-label={"01 " + page}>
         <Topbar page={page} setPage={setPage} />
         <div className={bodyClasses.join(" ")}>
@@ -128,8 +153,9 @@ const App = () => {
             <ChatPage activeConvId={activeConvId} setActiveConvId={setActiveConvId} openPreview={setPreview} />
           )}
           {page === "archivio" && <ArchivePage openPreview={setPreview} />}
-          {page === "metodologia" && <MethodologyPage />}
-          {page === "guida" && <GuidePage />}
+          {page === "materiali" && <MaterialiPage />}
+          {page === "tecniche" && <TecnichePage />}
+          {page === "info" && <MethodologyPage />}
 
           {preview && showPreview && (
             <PreviewPanel ref={preview} onClose={() => setPreview(null)} />
